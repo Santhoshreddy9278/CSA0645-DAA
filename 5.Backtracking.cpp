@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 #define MAX 10
 
 void subsetSum(int set[], int n, int target, int subset[], int subsetSize, int sum, int k) {
