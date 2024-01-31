@@ -1,47 +1,41 @@
 #include <stdio.h>
-#include <stdbool.h>
 
-void subsetSum(int set[], int n, int target, bool found[], int* count) {
-  if (target == 0) {
-    found[*count] = true;
-    (*count)++;
-    return;
-  } else if (n == 0 || target < 0) {
-    return;
-  }
+#define MAX 10
 
-  subsetSum(set, n - 1, target, found, count);
-  if (target >= set[n - 1]) {
-    subsetSum(set, n - 1, target - set[n - 1], found, count);
-  }
+void subsetSum(int set[], int n, int target, int subset[], int subsetSize, int sum, int k) {
+    if (sum == target) {
+        printf("Subset found: { ");
+        for (int i = 0; i < subsetSize; i++) {
+            printf("%d ", subset[i]);
+        }
+        printf("}\n");
+        return;
+    }
+
+    for (int i = k; i < n; i++) {
+        subset[subsetSize] = set[i];
+        subsetSum(set, n, target, subset, subsetSize + 1, sum + set[i], i + 1);
+    }
 }
 
 int main() {
-  int set[] = {6, 2, 8, 1, 5};
-  int n = sizeof(set) / sizeof(set[0]);
-  int target = 9;
-  bool found[100];
-  int count = 0;
+    int n, target;
 
-  subsetSum(set, n, target, found, &count);
+    printf("Enter the number of elements in the set: ");
+    scanf("%d", &n);
 
-  if (count > 0) {
-    printf("Subsets that sum to %d:\n", target);
-    for (int i = 0; i < count; i++) {
-      if (found[i]) {
-        printf("{");
-        for (int j = 0; j < n; j++) {
-          if (found[i * n + j]) {
-            printf("%d, ", set[j]);
-          }
-        }
-        printf("\b\b}\n");
-      }
+    int set[MAX];
+
+    printf("Enter the elements of the set:\n");
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &set[i]);
     }
-  } else {
-    printf("No subset found\n");
-  }
 
-  return 0;
+    printf("Enter the target sum: ");
+    scanf("%d", &target);
+
+    int subset[MAX];
+    subsetSum(set, n, target, subset, 0, 0, 0);
+
+    return 0;
 }
-
