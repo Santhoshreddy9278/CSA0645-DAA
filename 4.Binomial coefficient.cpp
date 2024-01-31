@@ -11,7 +11,6 @@ int binomialCoefficient(int n, int k) {
                 C[i][j] = C[i-1][j-1] + C[i-1][j];
         }
     }
-
     return C[n][k];
 }
 
