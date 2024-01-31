@@ -1,43 +1,43 @@
 #include <stdio.h>
 
-int binarySearch(int arr[], int target, int left, int right) {
-  if (left > right) {
-    return -1; 
+int sumOfDigits(int n) {
+  int sum = 0;
+  while (n > 0) {
+    sum += n % 10;
+    n /= 10;
   }
+  return sum;
+}
 
-  int mid = (left + right) / 2;
-
-  if (arr[mid] == target) {
-    return mid; 
-  } else if (arr[mid] > target) {
-    return binarySearch(arr, target, left, mid - 1);
-  } else {
-    return binarySearch(arr, target, mid + 1, right); 
+int maxSumPair(int nums[], int size) {
+  int max_sum = 0;
+  for (int i = 0; i < size; i++) {
+    for (int j = i; j < size; j++) {
+      if (i == j && sumOfDigits(nums[i]) == sumOfDigits(nums[j])) {
+        int current_sum = nums[i] + nums[j];
+        if (current_sum > max_sum) {
+          max_sum = current_sum;
+        }
+      }
+    }
   }
+  return max_sum;
 }
 
 int main() {
-  int n, target;
+  int n;
 
-  printf("Enter number of elements: ");
+  printf("Enter the number of elements in the array: ");
   scanf("%d", &n);
-  printf("Enter target element: ");
-  scanf("%d", &target);
 
-  int arr[n];
+  int nums[n];
+  printf("Enter the elements of the array: ");
   for (int i = 0; i < n; i++) {
-    printf("Enter element %d: ", i + 1);
-    scanf("%d", &arr[i]);
+    scanf("%d", &nums[i]);
   }
 
-  int index = binarySearch(arr, target, 0, n - 1);
-
-  if (index == -1) {
-    printf("Target element not found in the array.\n");
-  } else {
-    printf("Target element found at index %d.\n", index);
-  }
+  int max_sum = maxSumPair(nums, n);
+  printf("Maximum value of nums[i] + nums[j] such that i = j and sum of digits of nums[i] and nums[j] is equal: %d\n", max_sum);
 
   return 0;
 }
-
