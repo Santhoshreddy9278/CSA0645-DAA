@@ -1,35 +1,26 @@
 #include <stdio.h>
 
-int binomialCoeff(int n, int k) {
-  if (k == 0 || k == n) {
-    return 1;
-  } 
-  else
-  {
-    return binomialCoeff(n - 1, k - 1) + binomialCoeff(n - 1, k);
-  }
-}
-
-void printPascalRow(int n, int row) {
-  for (int k = 0; k <= row; k++) {
-    printf("%d ", binomialCoeff(n, k));
-  }
-  printf("\n");
-}
-void printPascalTriangle(int n) {
-  for (int row = 0; row < n; row++) {
-    printPascalRow(n, row);
-  }
+long pascalTriangle(int n, int i) {
+        if(n == i || i == 0)
+                return 1;
+        else
+                return pascalTriangle(n-1, i) + pascalTriangle(n-1, i-1);
 }
 
 int main() {
-  int n;
+   int n, i, j, space = 0;
 
-  printf("Enter the number of rows: ");
-  scanf("%d", &n);
+   printf("Enter the number of lines: ");
+   scanf("%d", &n);
 
-  printf("Pascal's Triangle for %d rows:\n", n);
-  printPascalTriangle(n);
-
-  return 0;
+   for(i = 0; n > i; i++) {
+            for(space = 0; space < n-i; space++)
+                    printf(" ");
+            for(j = 0; i >= j; j++) {
+                    long res = pascalTriangle(i, j);
+                    printf("%ld ", res);
+            }
+            printf("\n");
+    }
+    return 0;
 }
