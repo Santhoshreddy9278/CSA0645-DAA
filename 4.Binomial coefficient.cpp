@@ -1,23 +1,33 @@
 #include <stdio.h>
 
-int binomialCoeff(int n, int k) {
-  if (k == 0 || k == n) {
-    return 1;
-  } else {
-    return binomialCoeff(n - 1, k - 1) + binomialCoeff(n - 1, k);
-  }
+int binomialCoefficient(int n, int k) {
+    int C[n+1][k+1];
+
+    for (int i = 0; i <= n; i++) {
+        for (int j = 0; j <= k && j <= i; j++) {
+            if (j == 0 || j == i)
+                C[i][j] = 1;
+            else
+                C[i][j] = C[i-1][j-1] + C[i-1][j];
+        }
+    }
+
+    return C[n][k];
 }
 
 int main() {
-  int n, k;
-  printf("Enter n: ");
-  scanf("%d", &n);
-  printf("Enter k: ");
-  scanf("%d", &k);
+    int n, k;
 
-  int result = binomialCoeff(n, k);
-  printf("Binomial coefficient C(%d, %d) is %d\n", n, k, result);
+    printf("Enter values for n and k (separated by space): ");
+    scanf("%d %d", &n, &k);
 
-  return 0;
+    if (n < 0 || k < 0 || k > n) {
+        printf("Invalid input. Please enter non-negative values for n and k, and ensure k is not greater than n.\n");
+        return 1;  
+    }
+
+
+    printf("C(%d, %d) = %d\n", n, k, binomialCoefficient(n, k));
+
+    return 0;
 }
-
