@@ -1,43 +1,57 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-int sumOfDigits(int n) {
-  int sum = 0;
-  while (n > 0) {
-    sum += n % 10;
-    n /= 10;
-  }
-  return sum;
-}
+int binarySearch(int arr[], int size, int key) {
+    int low = 0;
+    int high = size - 1;
 
-int maxSumPair(int nums[], int size) {
-  int max_sum = 0;
-  for (int i = 0; i < size; i++) {
-    for (int j = i; j < size; j++) {
-      if (i == j && sumOfDigits(nums[i]) == sumOfDigits(nums[j])) {
-        int current_sum = nums[i] + nums[j];
-        if (current_sum > max_sum) {
-          max_sum = current_sum;
-        }
-      }
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (arr[mid] == key)
+            return mid;
+        else if (arr[mid] < key)
+            low = mid + 1;
+        else
+            high = mid - 1;
     }
-  }
-  return max_sum;
+
+    return -1; 
 }
 
 int main() {
-  int n;
+    int size, key;
+    printf("Enter the size of the array: ");
+    scanf("%d", &size);
+    int *arr = (int *)malloc(size * sizeof(int));
+    printf("Enter the array elements:\n");
+    for (int i = 0; i < size; i++) {
+        scanf("%d", &arr[i]);
+    }
+    printf("Enter the number to search for: ");
+    scanf("%d", &key);
+    clock_t start_time = clock();
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+    int index = binarySearch(arr, size, key);
 
-  printf("Enter the number of elements in the array: ");
-  scanf("%d", &n);
+    clock_t end_time = clock();
+    double cpu_time_used = ((double) (end_time - start_time)) / CLOCKS_PER_SEC;
+    if (index != -1) {
+        printf("Number %d found at index %d\n", key, index);
+    } else {
+        printf("Number %d not found in the array\n", key);
+    }
 
-  int nums[n];
-  printf("Enter the elements of the array: ");
-  for (int i = 0; i < n; i++) {
-    scanf("%d", &nums[i]);
-  }
+   
 
-  int max_sum = maxSumPair(nums, n);
-  printf("Maximum value of nums[i] + nums[j] such that i = j and sum of digits of nums[i] and nums[j] is equal: %d\n", max_sum);
-
-  return 0;
+    return 0;
 }
